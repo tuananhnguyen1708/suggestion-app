@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Tên tài khoản') }}</label>
+                            <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Tên đăng nhập') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
@@ -178,7 +178,7 @@
 
     {{--<script src="{{asset('../../../assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>--}}
     {{--<script src="{{asset('../../../assets/demo/default/base/scripts.bundle.js')}}" type="text/javascript"></script>--}}
-    {{--<script src="{{asset('../../../assets/snippets/custom/pages/user/login.js')}}" type="text/javascript"></script>--}}
+    {{--<script src="{{asset('../../../assets/snippets/custom/pages/user/home.js')}}" type="text/javascript"></script>--}}
 
 {{--</body>--}}
 
