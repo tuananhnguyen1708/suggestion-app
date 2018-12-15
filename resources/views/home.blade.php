@@ -28,11 +28,9 @@
 @endsection
 
 @section('content')
-    @include('modals.add-modal')
     <div class="m-portlet m-portlet--mobile">
         {{--USERMANAGEMENT.COMPONENT--}}
         <user-management></user-management>
-
 
         <div class="m-portlet__body">
             {{--USERTABLE.component--}}

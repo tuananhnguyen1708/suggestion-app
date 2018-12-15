@@ -29,8 +29,6 @@ class HomeRepository extends BaseRepository
             if ($orderBy != null && $orderType != null) {
                 $query->orderBy($orderBy, $orderType);
             }
-
-
         } else {
             return $query->count();
         }
@@ -40,5 +38,30 @@ class HomeRepository extends BaseRepository
         return $user;
     }
 
+    public function delete($id){
+//        User::where('id','=',$id)->delete();
+
+        $user = User::find($id);
+
+        if ($user != null){
+            return $user->delete();
+        }
+        return true;
+    }
+
+    public function add($name, $username, $email, $phone,$password){
+        $user = new User();
+
+        $user->name = $name;
+        $user->username= $username;
+        $user->email = $email;
+        $user->phone = $phone;
+        $user->password = $password;
+
+        if($user->save()==false){
+            return false;
+        }
+        return true;
+    }
 }
 

@@ -1,74 +1,45 @@
 <template>
     <table class="table table-striped- table-bordered table-hover table-checkable" id="userTable">
-        <!--<thead>-->
-        <!--<tr>-->
-            <!--<th>STT</th>-->
-            <!--<th>Tên đăng nhập</th>-->
-            <!--<th>Tên đầy đủ</th>-->
-            <!--<th>Email</th>-->
-            <!--<th>Phone</th>-->
-            <!--<th>Hành động</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-
-        <!--@foreach($users as $user)-->
-        <!--<tr>-->
-            <!--<th>{{$user->id}}</th>-->
-            <!--<th>{{$user->name}}</th>-->
-            <!--<th>{{$user->username}}</th>-->
-            <!--<th>{{$user->email}}</th>-->
-            <!--<th>{{$user->phone}}</th>-->
-            <!--<th>-->
-                <!--<a href="#" class="btn btn-outline-primary btn-sm 	m-btn m-btn&#45;&#45;icon m-btn&#45;&#45;pill" v-on:click="editUser()">-->
-															<!--<span>-->
-																<!--<i class="fas fa-edit"></i>-->
-																<!--<span>Chỉnh sửa</span>-->
-															<!--</span>-->
-                <!--</a>-->
-                <!--<a href="#" class="btn btn-outline-danger m-btn btn-sm  m-btn&#45;&#45;icon m-btn&#45;&#45;pill" v-on:click="deleteUser()">-->
-															<!--<span>-->
-																<!--<i class="fas fa-trash-alt"></i>-->
-																<!--<span>Xóa</span>-->
-															<!--</span>-->
-                <!--</a>-->
-            <!--</th>-->
-        <!--</tr>-->
-        <!--@endforeach-->
     </table>
 </template>
 
 <script>
+    import {appNotify} from '../../helper/notifyHelper';
+    import {deleteUserService} from '../../services/userServices';
+    import bootbox from 'bootbox'
+    import 'bootstrap-notify'
+
     export default {
         name: "UserTable",
 
-        data(){
+        data() {
             return {
                 userDataTable: null,
                 columns: [
                     {
                         data: null,
-                        name:'STT',
+                        name: 'STT',
                         title: 'STT',
                         orderable: false,
                         width: "20px"
                     },
                     {
-                        name:'name',
+                        name: 'name',
                         data: 'name',
                         title: 'Tên đăng nhập',
                     },
                     {
-                        name:'username',
+                        name: 'username',
                         data: 'username',
                         title: 'Tên đầy đủ'
                     },
                     {
-                        name:'email',
+                        name: 'email',
                         data: 'email',
                         title: 'Email'
                     },
                     {
-                        name:'phone',
+                        name: 'phone',
                         data: 'phone',
                         title: 'Số điện thoại'
                     },
@@ -78,7 +49,7 @@
                         orderable: false,
                         width: "80px",
                         title: 'Hành động',
-                        render(data,type,row){
+                        render(data, type, row) {
                             return '\
                                         <a href="javascript:;" class=" action-user-edit m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill inverse" title="Chỉnh sửa">\
                                             <i class="fas fa-edit"></i>\
@@ -92,15 +63,15 @@
                 ]
             }
         },
-        mounted(){
+        mounted() {
             this.initTable();
             this.handleTable();
         },
         methods: {
-            initTable(){
+            initTable() {
                 let $this = this;
                 this.userDataTable = $('#userTable').DataTable({
-                    ajax:{
+                    ajax: {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
@@ -109,10 +80,10 @@
                         type: 'POST'
                     },
                     columns: this.columns,
-                    order:[1,'asc']
+                    order: [1, 'asc']
                 });
 
-                this.userDataTable.on('order.dt search.dt draw.dt',function () {
+                this.userDataTable.on('order.dt search.dt draw.dt', function () {
                     var info = $this.userDataTable.page.info();
                     var start = info.start;
 
@@ -128,23 +99,65 @@
                 })
             },
 
-            handleTable(){
-                let $this= this;
+            handleTable() {
+                let $this = this;
 
-                $(document).on('click','.action-user-edit',function () {
+                $(document).on('click', '.action-user-edit', function () {
                     var tr = $(this).closest('tr');
                     var data = $($this.$el).DataTable().row(tr).data();
+                    $this.$emit('show-user-detail', data);
                 })
 
-                $(document).on('click','.action-user-delete',function () {
+                $(document).on('click', '.action-user-delete', function () {
                     var tr = $(this).closest('tr');
                     var data = $($this.$el).DataTable().row(tr).data();
+                    $this.deleteUser(data);
                 })
             },
 
-            deleteUser(){},
+            deleteUser(item) {
+                let $this = this;
 
-            editUser(){}
+                bootbox.confirm({
+                    size: 'normal',
+                    message: 'Bạn có muốn xóa user <b class="text-danger"> ' + item.name + ' </b> ?',
+                    buttons: {
+                        confirm: {
+                            label: 'Đồng ý',
+                            className: 'btn btn-danger'
+                        },
+                        cancel: {
+                            label: 'Hủy'
+                        }
+                    },
+                    callback: function (action) {
+                        if (action) {
+                            // deleteUserService({id: item.id}, function () {
+                            //     console.log('ok',response);
+                            //     appNotify('Xóa người dùng thành công', 'success' , null, 'la la-trash');
+                            //     $this.userDataTable.ajax.reload(null, false);
+                            // }, function (error) {
+                            //     console.log('nok',error);
+                            //     appNotify('Xóa người dùng thất bại','danger', null, 'la la-warning');
+                            //     $this.userDataTable.ajax.reload(null, false);
+                            // });
+
+                            axios.post('/delete', {id: item.id})
+                                .then(function (response) {
+                                    appNotify('Xóa người dùng thành công', 'success', null, 'la la-trash');
+                                    $this.userDataTable.ajax.reload(null, false);
+                                })
+                                .catch(function (error) {
+                                    appNotify('Xoá người dùng thất bại', 'danger');
+                                    $this.userDataTable.ajax.reload(null, false);
+                                })
+                        }
+                    }
+                });
+            },
+
+            editUser() {
+            },
 
         }
     }

@@ -65,4 +65,29 @@ class HomeController extends Controller
         return response()->json($arr);
     }
 
+    public function delete(Request $request){
+        $result = $this->userRepository->delete($request->input('id'));
+
+        return response()->json($result);
+    }
+
+//    public function processCommonResponse($result, $data = null){
+//        return response()->json(array(
+//            'code' => $result ? CODE_SUCCESS : CODE_ERROR,
+//            'message' => $result ? MESSAGE_SUCCESS : MESSAGE_ERROR,
+//            'data' => $data
+//        ));
+//    }
+    public function store(Request $request){
+        $result = $this->userRepository->add($request->only(
+            'name',
+            'username',
+            'email',
+            'phone',
+            'password'
+        ));
+
+        return response()->json($result);
+    }
+
 }

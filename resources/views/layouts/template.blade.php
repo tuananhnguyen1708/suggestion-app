@@ -35,6 +35,19 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" type="text/css">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
 
+    {{--Bootstrap Notify--}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css">
+    {{--Bootbox--}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js">
+
+    {{--Datatable Style--}}
+
+    <!--begin::Page Vendors Styles -->
+    <link href="{{asset('assets/vendors/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+
+    <!--RTL version:<link href="../../../assets/vendors/custom/datatables/datatables.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
+
+
 
 </head>
 
@@ -77,26 +90,20 @@
     </li>
 </ul>
 
-<!--begin::Global Theme Bundle -->
+
 <script src="{{asset('assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/demo/default/base/scripts.bundle.js')}}" type="text/javascript"></script>
 
-<!--end::Global Theme Bundle -->
-
-<!--begin::Page Vendors -->
 <script src="{{asset('assets/vendors/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
 
-<!--end::Page Vendors -->
-
-<!--begin::Page Scripts -->
 <script src="{{asset('assets/demo/default/custom/crud/datatables/basic/paginations.js')}}" type="text/javascript"></script>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
-{{--<script src="{{asset('assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>--}}
-{{--<script src="{{asset('assets/demo/default/base/scripts.bundle')}}" type="text/javascript"></script>--}}
+
 <script src="{{asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.js')}}" type="text/javascript"></script>
-{{--<script src="{{asset('assets/app/js/dashboard.js" type="text/javascript')}}"></script>--}}
+<script src="{{asset('assets/app/js/dashboard.js" type="text/javascript')}}"></script>
 
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

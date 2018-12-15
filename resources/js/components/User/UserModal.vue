@@ -1,15 +1,15 @@
 <template>
-    <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="addUserModal">
+    <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog" aria-hidden="true" >
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Thêm người dùng</h5>
+                    <h5 class="modal-title">Thêm người dùng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form ref="userForm">
                         <div class="form-group">
                             <label for="name" class="form-control-label">Tên đăng nhập:</label>
                             <input type="text" class="form-control" id="name">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Lưu</button>
+                    <button type="submit" class="btn btn-primary">Lưu111</button>
                 </div>
             </div>
         </div>
@@ -42,8 +42,35 @@
 </template>
 
 <script>
+    import {appNotify} from "../../helper/notifyHelper";
+
     export default {
-        name: "UserModal"
+        name: "UserModal",
+        data() {
+            return {
+                currentUser: null,
+            }
+        },
+        methods: {
+            addUser() {
+                // let $this = this;
+                var userData = $(this.$refs.userForm).serialize();
+
+                axios.post('/store', {userData})
+                    .then(function (response) {
+                        appNotify('Thêm người dùng thành công', 'success', null, 'la la-trash')
+                        $this.userDataTable.ajax.reload(null, false);
+
+                        $('#add-user-modal').modal('hide');
+                    })
+                    .catch(function (error) {
+                        appNotify('Thêm người dùng thất bại','danger')
+                        $this.userDataTable.ajax.reload(null, false);
+                        $('#add-user-modal').modal('hide');
+
+                    })
+            }
+        }
     }
 </script>
 
