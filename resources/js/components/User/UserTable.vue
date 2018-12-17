@@ -1,11 +1,9 @@
 <template>
-    <table class="table table-striped- table-bordered table-hover table-checkable" id="userTable">
-    </table>
+    <table class="table table-striped- table-bordered table-hover table-checkable" id="userTable"></table>
 </template>
 
 <script>
     import {appNotify} from '../../helper/notifyHelper';
-    import {deleteUserService} from '../../services/userServices';
     import bootbox from 'bootbox'
     import 'bootstrap-notify'
 
@@ -18,34 +16,34 @@
                 columns: [
                     {
                         data: null,
-                        name: 'STT',
+                        // name: 'STT',
                         title: 'STT',
                         orderable: false,
                         width: "20px"
                     },
                     {
-                        name: 'name',
+                        // name: 'name',
                         data: 'name',
                         title: 'Tên đăng nhập',
                     },
                     {
-                        name: 'username',
+                        // name: 'username',
                         data: 'username',
                         title: 'Tên đầy đủ'
                     },
                     {
-                        name: 'email',
+                        // name: 'email',
                         data: 'email',
                         title: 'Email'
                     },
                     {
-                        name: 'phone',
+                        // name: 'phone',
                         data: 'phone',
                         title: 'Số điện thoại'
                     },
                     {
                         data: null,
-                        name: 'actions',
+                        // name: 'actions',
                         orderable: false,
                         width: "80px",
                         title: 'Hành động',
@@ -105,7 +103,8 @@
                 $(document).on('click', '.action-user-edit', function () {
                     var tr = $(this).closest('tr');
                     var data = $($this.$el).DataTable().row(tr).data();
-                    $this.$emit('show-user-detail', data);
+                    $this.$emit('show-detail', data);
+
                 })
 
                 $(document).on('click', '.action-user-delete', function () {
@@ -132,15 +131,6 @@
                     },
                     callback: function (action) {
                         if (action) {
-                            // deleteUserService({id: item.id}, function () {
-                            //     console.log('ok',response);
-                            //     appNotify('Xóa người dùng thành công', 'success' , null, 'la la-trash');
-                            //     $this.userDataTable.ajax.reload(null, false);
-                            // }, function (error) {
-                            //     console.log('nok',error);
-                            //     appNotify('Xóa người dùng thất bại','danger', null, 'la la-warning');
-                            //     $this.userDataTable.ajax.reload(null, false);
-                            // });
 
                             axios.post('/delete', {id: item.id})
                                 .then(function (response) {
@@ -154,9 +144,6 @@
                         }
                     }
                 });
-            },
-
-            editUser() {
             },
 
         }

@@ -1,40 +1,56 @@
 <template>
-    <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" >
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Thêm người dùng</h5>
+                    <!--<h5 class="modal-title">Thêm người dùng 123</h5>-->
+                    <h5 class="modal-title">
+                        <template v-if="isEditUser">
+                            Cập nhật người dùng
+                        </template>
+                        <template v-else>
+                            Thêm mới người dùng
+                        </template>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form ref="userForm">
+                    <form ref="userForm" @submit.prevent="validateForm()">
                         <div class="form-group">
-                            <label for="name" class="form-control-label">Tên đăng nhập:</label>
-                            <input type="text" class="form-control" id="name">
+                            <label class="form-control-label">Tên đăng nhập:</label>
+                            <input type="text" class="form-control" name="name" v-model="currentUser.name">
                         </div>
                         <div class="form-group">
-                            <label for="username" class="form-control-label">Tên đầy đủ:</label>
-                            <input type="text" class="form-control" id="username">
+                            <label class="form-control-label">Tên đầy đủ:</label>
+                            <input type="text" class="form-control" name="username" v-model="currentUser.username">
                         </div>
                         <div class="form-group">
-                            <label for="email" class="form-control-label">Email:</label>
-                            <input type="text" class="form-control" id="email">
+                            <label class="form-control-label">Email:</label>
+                            <input type="text" class="form-control" name="email" v-model="currentUser.email">
                         </div>
                         <div class="form-group">
-                            <label for="phone" class="form-control-label">Phone:</label>
-                            <input type="text" class="form-control" id="phone">
+                            <label class="form-control-label">Phone:</label>
+                            <input type="text" class="form-control" name="phone" v-model="currentUser.phone">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="form-control-label">Mật khẩu:</label>
-                            <input type="password" class="form-control" id="password">
+                            <label class="form-control-label">Mật khẩu:</label>
+                            <input type="password" class="form-control" name="password" v-model="currentUser.password">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Lưu111</button>
+                    <!--<button type="submit" class="btn btn-primary">Lưu</button>-->
+                    <button type="submit" class="btn btn-primary">
+                        <template v-if="isEditUser">
+                            Cập nhật
+                        </template>
+                        <template v-else>
+                            Thêm mới
+                        </template>
+                    </button>
                 </div>
             </div>
         </div>
@@ -43,15 +59,35 @@
 
 <script>
     import {appNotify} from "../../helper/notifyHelper";
+    import VeeValidate, {Validator} from 'vee-validate';
 
+    const defaultUser = {
+        name : '',
+        username: '',
+        email:'',
+        phone: '',
+        password: '',
+    }
     export default {
         name: "UserModal",
         data() {
             return {
-                currentUser: null,
+                currentUser: Object.assign({},defaultUser),
+                isEditUser : false
             }
         },
+        mounted(){
+            this.handleEvents();
+        },
         methods: {
+            handleEvents(){
+                let $this = this;
+                
+                $(this.$el).on("hide.bs.modal",function () {
+                    $this.isEditUser = false;
+                    $this.currentUser = Object.assign({},defaultUser);
+                })
+            },
             addUser() {
                 // let $this = this;
                 var userData = $(this.$refs.userForm).serialize();
@@ -61,14 +97,53 @@
                         appNotify('Thêm người dùng thành công', 'success', null, 'la la-trash')
                         $this.userDataTable.ajax.reload(null, false);
 
-                        $('#add-user-modal').modal('hide');
+                        $(this.$el).modal('hide')
                     })
                     .catch(function (error) {
                         appNotify('Thêm người dùng thất bại','danger')
                         $this.userDataTable.ajax.reload(null, false);
-                        $('#add-user-modal').modal('hide');
+
+                        $(this.$el).modal('hide')
 
                     })
+            },
+            updateUser(){
+                var userData = $(this.$refs.userForm).serialize();
+                userData += '$id' + this.currentUser.id;
+
+                axios.post('/update',{userData})
+                    .then(function (response) {
+                        appNotify('Chỉnh sửa người dùng thành công','success',null,'la la-trash')
+                        $this.userDataTable.ajax.reload(null,false);
+
+                        $(this.$el).modal('hide')
+                    })
+                    .catch(function (error) {
+                        appNotify('Chỉnh sửa người dùng không thành công','danger');
+                        $this.userDataTable.ajax.reload(null,false);
+
+                        $(this.$el).modal('hide')
+                    })
+
+            },
+
+            showModal(data){
+                if(data != null){
+                    this.isEditUser = true;
+                    this.currentUser = data;
+                }
+                $(this.$el).modal('show');
+            },
+            validateForm(scope){
+                this.$validator.validateAll(scope).then(result =>{
+                    if(result){
+                        if(this.isEditUser == false){
+                            this.addUser();
+                        } else {
+                            this.updateUser();
+                        }
+                    }
+                })
             }
         }
     }

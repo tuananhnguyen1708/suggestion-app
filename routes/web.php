@@ -9,3 +9,4 @@ $this->get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::post('/listing','HomeController@listing')->name('listing');
 Route::post('/delete','HomeController@delete')->name('delete');
 Route::post('/store','HomeController@store')->name('add');
+Route::post('/update','HomeController@update')->name('update');

@@ -49,7 +49,7 @@ class HomeRepository extends BaseRepository
         return true;
     }
 
-    public function add($name, $username, $email, $phone,$password){
+    public function store($name, $username, $email, $phone,$password){
         $user = new User();
 
         $user->name = $name;
@@ -62,6 +62,18 @@ class HomeRepository extends BaseRepository
             return false;
         }
         return true;
+    }
+
+    public function update($arr){
+        $user = User::find($arr['id']);
+
+        if($user != null){
+            $user->fill($arr);
+            $user->save();
+            return true;
+        }
+
+        return false;
     }
 }
 

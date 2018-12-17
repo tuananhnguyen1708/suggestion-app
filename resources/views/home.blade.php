@@ -27,22 +27,18 @@
     Trang chủ
 @endsection
 
+@section('script')
+    <script type="text/javascript" src="{{url('/'). mix('/js/home.js') }}"></script>
+@endsection
+
 @section('content')
     <div class="m-portlet m-portlet--mobile">
         {{--USERMANAGEMENT.COMPONENT--}}
         <user-management></user-management>
-
-        <div class="m-portlet__body">
-            {{--USERTABLE.component--}}
-            <user-table></user-table>
-
-        </div>
     </div>
 @endsection
 
 
-@section('script')
-    <script type="text/javascript" src="{{url('/'). mix('/js/home.js') }}"></script>
-@endsection
+
 
 

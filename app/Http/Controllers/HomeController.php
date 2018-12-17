@@ -79,12 +79,24 @@ class HomeController extends Controller
 //        ));
 //    }
     public function store(Request $request){
-        $result = $this->userRepository->add($request->only(
+        $result = $this->userRepository->store($request->only(
             'name',
             'username',
             'email',
             'phone',
             'password'
+        ));
+
+        return response()->json($result);
+    }
+
+    public function update(Request $request){
+        $result = $this->userRepository->update($request->only(
+           'name',
+           'username',
+           'email',
+           'phone',
+           'password'
         ));
 
         return response()->json($result);
