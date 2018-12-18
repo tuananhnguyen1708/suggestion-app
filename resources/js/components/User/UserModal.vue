@@ -1,9 +1,8 @@
 <template>
-    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="user-modal" >
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!--<h5 class="modal-title">Thêm người dùng 123</h5>-->
                     <h5 class="modal-title">
                         <template v-if="isEditUser">
                             Cập nhật người dùng
@@ -17,41 +16,78 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form ref="userForm" @submit.prevent="validateForm()">
-                        <div class="form-group">
+                    <form ref="userForm" @submit.prevent="validateForm('userForm')" data-vv-scope="'userForm'">
+
+                        <div class="form-group" :class="{ 'has-danger': errors.has('name') }">
                             <label class="form-control-label">Tên đăng nhập:</label>
-                            <input type="text" class="form-control" name="name" v-model="currentUser.name">
+                            <input type="text"
+                                   class="form-control"
+                                   name="name"
+                                   v-model="currentUser.name"
+                                   data-vv-as="name"
+                                   v-validate="'required|max:255'">
+                            <div class="form-control-feedback" v-cloak
+                                 v-show="errors.has('name')">
+                                {{ errors.first('name') }}
+                            </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" :class="{ 'has-danger': errors.has('username') }">
                             <label class="form-control-label">Tên đầy đủ:</label>
-                            <input type="text" class="form-control" name="username" v-model="currentUser.username">
+                            <input type="text"
+                                   class="form-control"
+                                   name="username"
+                                   data-vv-as="username"
+                                   v-model="currentUser.username"
+                                   v-validate="'required|max:255'">
+                            <div class="form-control-feedback" v-cloak
+                                 v-show="errors.has('username')">
+                                {{ errors.first('username') }}
+                            </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" :class="{ 'has-danger': errors.has('email') }">
                             <label class="form-control-label">Email:</label>
-                            <input type="text" class="form-control" name="email" v-model="currentUser.email">
+                            <input type="text"
+                                   class="form-control"
+                                   name="email"
+                                   data-vv-as="email"
+                                   v-model="currentUser.email"
+                                   v-validate="'max:255'">
+                            <div class="form-control-feedback" v-cloak
+                                 v-show="errors.has('email')">
+                                {{ errors.first('email') }}
+                            </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" :class="{ 'has-danger': errors.has('phone') }">
                             <label class="form-control-label">Phone:</label>
-                            <input type="text" class="form-control" name="phone" v-model="currentUser.phone">
+                            <input type="text"
+                                   class="form-control"
+                                   name="phone"
+                                   data-vv-as="phone"
+                                   v-model="currentUser.phone"
+                                   v-validate="'max:255'">
+                            <div class="form-control-feedback" v-cloak
+                                 v-show="errors.has('phone')">
+                                {{ errors.first('phone') }}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-control-label">Mật khẩu:</label>
-                            <input type="password" class="form-control" name="password" v-model="currentUser.password">
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">
+                                <template v-if="isEditUser">
+                                    Cập nhật
+                                </template>
+                                <template v-else >
+                                    Thêm mới
+                                </template>
+                            </button>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <!--<button type="submit" class="btn btn-primary">Lưu</button>-->
-                    <button type="submit" class="btn btn-primary">
-                        <template v-if="isEditUser">
-                            Cập nhật
-                        </template>
-                        <template v-else>
-                            Thêm mới
-                        </template>
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -60,13 +96,15 @@
 <script>
     import {appNotify} from "../../helper/notifyHelper";
     import VeeValidate, {Validator} from 'vee-validate';
+    import 'bootstrap-notify'
+
+    Vue.use(VeeValidate);
 
     const defaultUser = {
         name : '',
         username: '',
         email:'',
         phone: '',
-        password: '',
     }
     export default {
         name: "UserModal",
@@ -86,47 +124,48 @@
                 $(this.$el).on("hide.bs.modal",function () {
                     $this.isEditUser = false;
                     $this.currentUser = Object.assign({},defaultUser);
+                    $this.$validator.reset();
                 })
             },
             addUser() {
-                // let $this = this;
                 var userData = $(this.$refs.userForm).serialize();
-
-                axios.post('/store', {userData})
+                axios.post('/store', userData)
                     .then(function (response) {
                         appNotify('Thêm người dùng thành công', 'success', null, 'la la-trash')
                         $this.userDataTable.ajax.reload(null, false);
-
-                        $(this.$el).modal('hide')
+                        console.log('1');
+                        // $(this.$el).modal('hide')
+                        $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
                         appNotify('Thêm người dùng thất bại','danger')
-                        $this.userDataTable.ajax.reload(null, false);
-
-                        $(this.$el).modal('hide')
+                        // $(this.$el).modal('hide')
+                        console.log('2');
+                        $('#user-modal').modal('hide');
 
                     })
             },
             updateUser(){
                 var userData = $(this.$refs.userForm).serialize();
-                userData += '$id' + this.currentUser.id;
+                userData += '&id=' + this.currentUser.id;
 
-                axios.post('/update',{userData})
+                axios.post('/update',userData)
                     .then(function (response) {
                         appNotify('Chỉnh sửa người dùng thành công','success',null,'la la-trash')
                         $this.userDataTable.ajax.reload(null,false);
 
-                        $(this.$el).modal('hide')
+                        // $(this.$el).modal('hide')
+                        $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
                         appNotify('Chỉnh sửa người dùng không thành công','danger');
-                        $this.userDataTable.ajax.reload(null,false);
 
-                        $(this.$el).modal('hide')
+                        // $(this.$el).modal('hide')
+                        // $(this.$refs.userModal).modal('hide');
+                        $('#user-modal').modal('hide');
                     })
 
             },
-
             showModal(data){
                 if(data != null){
                     this.isEditUser = true;
@@ -135,7 +174,7 @@
                 $(this.$el).modal('show');
             },
             validateForm(scope){
-                this.$validator.validateAll(scope).then(result =>{
+                this.$validator.validateAll(scope).then((result) =>{
                     if(result){
                         if(this.isEditUser == false){
                             this.addUser();

@@ -71,33 +71,46 @@ class HomeController extends Controller
         return response()->json($result);
     }
 
-//    public function processCommonResponse($result, $data = null){
-//        return response()->json(array(
-//            'code' => $result ? CODE_SUCCESS : CODE_ERROR,
-//            'message' => $result ? MESSAGE_SUCCESS : MESSAGE_ERROR,
-//            'data' => $data
-//        ));
-//    }
     public function store(Request $request){
-        $result = $this->userRepository->store($request->only(
-            'name',
-            'username',
-            'email',
-            'phone',
-            'password'
-        ));
+//        $result = $this->userRepository->store($request->input(
+//            'name',
+//            'username',
+//            'email',
+//            'phone',
+//            'password'
+//        ));
+//
+//        return response()->json($result);
+
+        $name = $request->input('name');
+        $username = $request->input('username');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+//        $password = $request->input('password');
+
+        $result = $this->userRepository->store($name,$username,$email,$phone);
 
         return response()->json($result);
     }
 
     public function update(Request $request){
-        $result = $this->userRepository->update($request->only(
-           'name',
-           'username',
-           'email',
-           'phone',
-           'password'
-        ));
+//        $result = $this->userRepository->update($request->input(
+//           'name',
+//           'username',
+//           'email',
+//           'phone',
+//           'password'
+//        ));
+
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $username = $request->input('username');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+//        $password = $request->input('password');
+
+        $result = $this->userRepository->update($id,$name,$username,$email,$phone);
+
 
         return response()->json($result);
     }

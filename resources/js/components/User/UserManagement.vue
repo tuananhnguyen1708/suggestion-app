@@ -46,10 +46,7 @@
         },
         methods: {
             showModal(data) {
-                // $('#add-user-modal').modal('show');
-                // $(this.$el).modal('show');
                 this.$refs.userModal.showModal(data);
-                // console.log('mo modal')
             },
         }
     }
