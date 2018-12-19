@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade"  tabindex="-1" role="dialog" aria-hidden="true" id="user-modal" >
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="user-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,7 +80,7 @@
                                 <template v-if="isEditUser">
                                     Cập nhật
                                 </template>
-                                <template v-else >
+                                <template v-else>
                                     Thêm mới
                                 </template>
                             </button>
@@ -97,86 +97,117 @@
     import {appNotify} from "../../helper/notifyHelper";
     import VeeValidate, {Validator} from 'vee-validate';
     import 'bootstrap-notify'
+    import {addUserService, updateUserService} from '../../services/userServices'
 
     Vue.use(VeeValidate);
 
     const defaultUser = {
-        name : '',
+        name: '',
         username: '',
-        email:'',
+        email: '',
         phone: '',
     }
     export default {
         name: "UserModal",
         data() {
             return {
-                currentUser: Object.assign({},defaultUser),
-                isEditUser : false
+                currentUser: Object.assign({}, defaultUser),
+                isEditUser: false
             }
         },
-        mounted(){
+        mounted() {
             this.handleEvents();
         },
         methods: {
-            handleEvents(){
+            handleEvents() {
                 let $this = this;
-                
-                $(this.$el).on("hide.bs.modal",function () {
+
+                $(this.$el).on("hide.bs.modal", function () {
                     $this.isEditUser = false;
-                    $this.currentUser = Object.assign({},defaultUser);
+                    $this.currentUser = Object.assign({}, defaultUser);
                     $this.$validator.reset();
                 })
             },
             addUser() {
                 var userData = $(this.$refs.userForm).serialize();
+
                 axios.post('/store', userData)
-                    .then(function (response) {
+                    .then( (response) => {
                         appNotify('Thêm người dùng thành công', 'success', null, 'la la-trash')
-                        $this.userDataTable.ajax.reload(null, false);
-                        console.log('1');
-                        // $(this.$el).modal('hide')
+                        this.$emit('action-done');
                         $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
                         appNotify('Thêm người dùng thất bại','danger')
-                        // $(this.$el).modal('hide')
-                        console.log('2');
+                        console.log(error);
                         $('#user-modal').modal('hide');
 
                     })
             },
+            // addUser() {
+            //     var userData = $(this.$refs.userForm).serialize();
+            //     addUserService(userData, function () {
+            //         appNotify('Thêm người dùng thành công!','success', null, 'la la-trash');
+            //         $this.userDataTable.ajax.reload(null, false);
+            //
+            //         $('#user-modal').modal('hide');
+            //     }, function (error) {
+            //         if(error !=null){
+            //             $this.alertMessage = error;
+            //         }
+            //         else {
+            //             appNotify('Thêm người dùng không thành công!', 'danger');
+            //             $this.userDataTable.ajax.reload(null, false);
+            //             $('#user-modal').modal('hide');
+            //         }
+            //     });
+            //
+            // },
             updateUser(){
+
                 var userData = $(this.$refs.userForm).serialize();
                 userData += '&id=' + this.currentUser.id;
 
                 axios.post('/update',userData)
-                    .then(function (response) {
+                    .then( (response) => {
                         appNotify('Chỉnh sửa người dùng thành công','success',null,'la la-trash')
-                        $this.userDataTable.ajax.reload(null,false);
-
-                        // $(this.$el).modal('hide')
+                        this.$emit('action-done');
                         $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
                         appNotify('Chỉnh sửa người dùng không thành công','danger');
-
-                        // $(this.$el).modal('hide')
-                        // $(this.$refs.userModal).modal('hide');
+                        console.log(error);
                         $('#user-modal').modal('hide');
                     })
 
             },
-            showModal(data){
-                if(data != null){
+            // updateUser() {
+            //     let $this = this;
+            //     var userData = $(this.$refs.userForm).serialize();
+            //     userData += '&id=' + this.currentUser.id;
+            //     updateUserService(userData, function () {
+            //         appNotify('Cập nhật người dùng thành công!','success', null, 'la la-trash');
+            //         $this.userDataTable.ajax.reload(null, false);
+            //
+            //         $('#user-modal').modal('hide');
+            //     }, function (error) {
+            //         console.log(error);
+            //         appNotify('Cập nhật người dùng không thành công!','danger');
+            //         $('#user-modal').modal('hide');
+            //
+            //     })
+            // },
+            showModal(data) {
+                if (data != null) {
                     this.isEditUser = true;
                     this.currentUser = data;
                 }
                 $(this.$el).modal('show');
             },
-            validateForm(scope){
-                this.$validator.validateAll(scope).then((result) =>{
-                    if(result){
-                        if(this.isEditUser == false){
+            validateForm(scope) {
+                this.$validator.validateAll(scope).then((result) => {
+                    if (result) {
+                        if (this.isEditUser == false) {
                             this.addUser();
                         } else {
                             this.updateUser();

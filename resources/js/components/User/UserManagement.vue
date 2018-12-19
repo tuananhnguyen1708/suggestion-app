@@ -24,8 +24,8 @@
             </div>
         </div>
         <div class="m-portlet__body">
-            <user-table @show-detail="showModal"></user-table>
-            <user-modal ref="userModal"></user-modal>
+            <user-table ref="userTable" @show-detail="showModal"></user-table>
+            <user-modal ref="userModal" @action-done="reloadData"></user-modal>
         </div>
 
     </div>
@@ -48,6 +48,9 @@
             showModal(data) {
                 this.$refs.userModal.showModal(data);
             },
+            reloadData() {
+                this.$refs.userTable.reload();
+            }
         }
     }
 </script>

@@ -59,10 +59,10 @@ class HomeRepository extends BaseRepository
         $user->phone = $phone;
 //        $user->password = $password;
 
-        if($user->save()==false){
-            return false;
+        if($user->save()){
+            return true;
         }
-        return true;
+        return false;
     }
 
     public function update($id,$name,$username,$email,$phone){
@@ -75,10 +75,9 @@ class HomeRepository extends BaseRepository
             $user->phone = $phone;
 //            $user->password = $password;
 
-            if($user->save() == false){
-                return false;
+            if($user->save()){
+                return true;
             }
-            return true;
         }
         return false;
 

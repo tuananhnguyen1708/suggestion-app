@@ -94,13 +94,7 @@ class HomeController extends Controller
     }
 
     public function update(Request $request){
-//        $result = $this->userRepository->update($request->input(
-//           'name',
-//           'username',
-//           'email',
-//           'phone',
-//           'password'
-//        ));
+
 
         $id = $request->input('id');
         $name = $request->input('name');
@@ -113,6 +107,7 @@ class HomeController extends Controller
 
 
         return response()->json($result);
+//        return response($result);
     }
 
 }

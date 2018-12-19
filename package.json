@@ -25,6 +25,7 @@
         "bootstrap4-notify": "^4.0.3",
         "datatables": "^1.10.18",
         "daterangepicker": "^3.0.3",
+        "jquery-ajax": "^2.1.4",
         "vee-validate": "^2.1.4"
     }
 }

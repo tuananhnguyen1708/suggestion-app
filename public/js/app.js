@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 41);
+/******/ 	return __webpack_require__(__webpack_require__.s = 42);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -24996,11 +24996,11 @@ module.exports = Vue;
 
 window._ = __webpack_require__(14);
 window.Popper = __webpack_require__(4).default;
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+// $.ajaxSetup({
+//     headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//     }
+// });
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -25008,9 +25008,9 @@ $.ajaxSetup({
  */
 
 try {
-    window.$ = window.jQuery = __webpack_require__(2);
+  window.$ = window.jQuery = __webpack_require__(2);
 
-    __webpack_require__(16);
+  __webpack_require__(16);
 } catch (e) {}
 
 /**
@@ -25032,9 +25032,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -25043,18 +25043,18 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 window.ReponseCode = {
-    SUCCESS: 0,
-    ERROR: 1
-    // import Echo from 'laravel-echo'
+  SUCCESS: 0,
+  ERROR: 1
+  // import Echo from 'laravel-echo'
 
-    // window.Pusher = require('pusher-js');
+  // window.Pusher = require('pusher-js');
 
-    // window.Echo = new Echo({
-    //     broadcaster: 'pusher',
-    //     key: process.env.MIX_PUSHER_APP_KEY,
-    //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    //     encrypted: true
-    // });
+  // window.Echo = new Echo({
+  //     broadcaster: 'pusher',
+  //     key: process.env.MIX_PUSHER_APP_KEY,
+  //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  //     encrypted: true
+  // });
 
 };
 
@@ -47306,15 +47306,16 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* 38 */,
 /* 39 */,
 /* 40 */,
-/* 41 */
+/* 41 */,
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(42);
-module.exports = __webpack_require__(46);
+__webpack_require__(43);
+module.exports = __webpack_require__(47);
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -47334,22 +47335,22 @@ window.Vue = __webpack_require__(12);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(43));
+Vue.component('example-component', __webpack_require__(44));
 
 var app = new Vue({
   el: '#app'
 });
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(44)
+var __vue_script__ = __webpack_require__(45)
 /* template */
-var __vue_template__ = __webpack_require__(45)
+var __vue_template__ = __webpack_require__(46)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47388,7 +47389,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47417,7 +47418,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47460,7 +47461,7 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

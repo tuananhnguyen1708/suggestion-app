@@ -93,17 +93,16 @@
 
 <script src="{{asset('assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/demo/default/base/scripts.bundle.js')}}" type="text/javascript"></script>
-
 <script src="{{asset('assets/vendors/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-
 <script src="{{asset('assets/demo/default/custom/crud/datatables/basic/paginations.js')}}" type="text/javascript"></script>
 
-{{--<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>--}}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 
 <script src="{{asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/app/js/dashboard.js" type="text/javascript')}}"></script>
+{{--<script src="{{asset('assets/app/js/dashboard.js" type="text/javascript')}}" type="text/javascript"></script>--}}
 
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

@@ -145,6 +145,9 @@
                     }
                 });
             },
+            reload() {
+                this.userDataTable.ajax.reload(null, false);
+            }
 
         }
     }
