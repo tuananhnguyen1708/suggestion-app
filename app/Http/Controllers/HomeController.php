@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\HomeRepository;
-
+use App\Http\Request\User\DeleteUserRequest;
+use App\Http\Request\User\StoreUserRequest;
+use App\Http\Request\User\UpdateUserRequest;
 class HomeController extends Controller
 {
     protected $userRepository;
@@ -65,13 +67,13 @@ class HomeController extends Controller
         return response()->json($arr);
     }
 
-    public function delete(Request $request){
+    public function delete(DeleteUserRequest $request){
         $result = $this->userRepository->delete($request->input('id'));
 
         return response()->json($result);
     }
 
-    public function store(Request $request){
+    public function store(StoreUserRequest $request){
 //        $result = $this->userRepository->store($request->input(
 //            'name',
 //            'username',
@@ -93,7 +95,7 @@ class HomeController extends Controller
         return response()->json($result);
     }
 
-    public function update(Request $request){
+    public function update(UpdateUserRequest $request){
 
 
         $id = $request->input('id');

@@ -17,8 +17,10 @@
                 </div>
                 <div class="modal-body">
                     <form ref="userForm" @submit.prevent="validateForm('userForm')" data-vv-scope="'userForm'">
-
-                        <div class="form-group" :class="{ 'has-danger': errors.has('name') }">
+                        <div class="alert alert-danger" role="alert" v-if="alertMessage">
+                            <strong>Xin lỗi!{{alertMessage}}</strong>
+                        </div>
+                        <div class="form-group">
                             <label class="form-control-label">Tên đăng nhập:</label>
                             <input type="text"
                                    class="form-control"
@@ -32,7 +34,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" :class="{ 'has-danger': errors.has('username') }">
+                        <div class="form-group">
                             <label class="form-control-label">Tên đầy đủ:</label>
                             <input type="text"
                                    class="form-control"
@@ -46,7 +48,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" :class="{ 'has-danger': errors.has('email') }">
+                        <div class="form-group">
                             <label class="form-control-label">Email:</label>
                             <input type="text"
                                    class="form-control"
@@ -60,7 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" :class="{ 'has-danger': errors.has('phone') }">
+                        <div class="form-group">
                             <label class="form-control-label">Phone:</label>
                             <input type="text"
                                    class="form-control"
@@ -112,7 +114,8 @@
         data() {
             return {
                 currentUser: Object.assign({}, defaultUser),
-                isEditUser: false
+                isEditUser: false,
+                alertMessage: null,
             }
         },
         mounted() {
@@ -132,13 +135,14 @@
                 var userData = $(this.$refs.userForm).serialize();
 
                 axios.post('/store', userData)
-                    .then( (response) => {
+                    .then((response) => {
                         appNotify('Thêm người dùng thành công', 'success', null, 'la la-trash')
                         this.$emit('action-done');
                         $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
-                        appNotify('Thêm người dùng thất bại','danger')
+                        // this.alertMessage = userData.message;
+                        appNotify('Thêm người dùng thất bại', 'danger')
                         console.log(error);
                         $('#user-modal').modal('hide');
 
@@ -163,19 +167,19 @@
             //     });
             //
             // },
-            updateUser(){
+            updateUser() {
 
                 var userData = $(this.$refs.userForm).serialize();
                 userData += '&id=' + this.currentUser.id;
 
-                axios.post('/update',userData)
-                    .then( (response) => {
-                        appNotify('Chỉnh sửa người dùng thành công','success',null,'la la-trash')
+                axios.post('/update', userData)
+                    .then((response) => {
+                        appNotify('Chỉnh sửa người dùng thành công', 'success', null, 'la la-trash')
                         this.$emit('action-done');
                         $('#user-modal').modal('hide');
                     })
                     .catch(function (error) {
-                        appNotify('Chỉnh sửa người dùng không thành công','danger');
+                        appNotify('Chỉnh sửa người dùng không thành công', 'danger');
                         console.log(error);
                         $('#user-modal').modal('hide');
                     })

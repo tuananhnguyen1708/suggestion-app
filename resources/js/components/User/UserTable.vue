@@ -89,10 +89,10 @@
                         search: 'applied',
                         order: 'applied'
                     }).nodes().each(function (cell, i) {
-                        cell.innerHTML = i + 1 + start;
+                        cell.innerHTML = i + 1 ;
                     });
 
-                    $('.tooltip.show').remove();
+                    jQuery('.tooltip.show').remove();
                     $('.actions a').tooltip();
                 })
             },
