@@ -21,13 +21,13 @@
                             <strong>Xin lỗi!{{alertMessage}}</strong>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label">Tên đăng nhập:</label>
+                            <label class="form-control-label">Tên đăng nhập<span class="has-danger">(*)</span>:</label>
                             <input type="text"
                                    class="form-control"
                                    name="name"
                                    v-model="currentUser.name"
                                    data-vv-as="name"
-                                   v-validate="'required|max:255'">
+                                   v-validate="'required|max:255'" autocomplete="off">
                             <div class="form-control-feedback" v-cloak
                                  v-show="errors.has('name')">
                                 {{ errors.first('name') }}
@@ -35,13 +35,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-control-label">Tên đầy đủ:</label>
+                            <label class="form-control-label">Tên đầy đủ<span class="has-danger">(*)</span>:</label>
                             <input type="text"
                                    class="form-control"
                                    name="username"
                                    data-vv-as="username"
                                    v-model="currentUser.username"
-                                   v-validate="'required|max:255'">
+                                   v-validate="'required|max:255'" autocomplete="off">
                             <div class="form-control-feedback" v-cloak
                                  v-show="errors.has('username')">
                                 {{ errors.first('username') }}
@@ -49,13 +49,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-control-label">Email:</label>
+                            <label class="form-control-label">Email<span class="has-danger">(*)</span>:</label>
                             <input type="text"
                                    class="form-control"
                                    name="email"
                                    data-vv-as="email"
                                    v-model="currentUser.email"
-                                   v-validate="'max:255'">
+                                   v-validate="'max:255'" autocomplete="off">
                             <div class="form-control-feedback" v-cloak
                                  v-show="errors.has('email')">
                                 {{ errors.first('email') }}
@@ -69,10 +69,24 @@
                                    name="phone"
                                    data-vv-as="phone"
                                    v-model="currentUser.phone"
-                                   v-validate="'max:255'">
+                                   v-validate="'max:255'" autocomplete="off">
                             <div class="form-control-feedback" v-cloak
                                  v-show="errors.has('phone')">
                                 {{ errors.first('phone') }}
+                            </div>
+                        </div>
+
+                        <div class="form-group" v-if="renderPassword" v-show="currentUser.password != null" >
+                            <label class="form-control-label">Password<span class="has-danger">(*)</span>:</label>
+                            <input type="password"
+                                   class="form-control m-input"
+                                   name="password"
+                                   data-vv-as="password"
+                                   v-model="currentUser.password"
+                                   v-validate="'required|max:32|min:6'" autocomplete="off">
+                            <div class="form-control-feedback" v-cloak
+                                 v-show="errors.has('password')">
+                                {{ errors.first('password') }}
                             </div>
                         </div>
 
@@ -108,6 +122,7 @@
         username: '',
         email: '',
         phone: '',
+        password: '',
     }
     export default {
         name: "UserModal",
@@ -116,6 +131,7 @@
                 currentUser: Object.assign({}, defaultUser),
                 isEditUser: false,
                 alertMessage: null,
+                renderPassword : true,
             }
         },
         mounted() {
@@ -129,6 +145,7 @@
                     $this.isEditUser = false;
                     $this.currentUser = Object.assign({}, defaultUser);
                     $this.$validator.reset();
+                    $this.renderPassword = true;
                 })
             },
             addUser() {
@@ -214,6 +231,7 @@
                         if (this.isEditUser == false) {
                             this.addUser();
                         } else {
+                            this.renderPassword=false;
                             this.updateUser();
                         }
                     }

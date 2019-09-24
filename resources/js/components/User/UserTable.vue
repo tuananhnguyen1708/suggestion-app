@@ -45,15 +45,18 @@
                         data: null,
                         // name: 'actions',
                         orderable: false,
-                        width: "80px",
+                        width: "90px",
                         title: 'Hành động',
                         render(data, type, row) {
                             return '\
+                                        <a href="javascript:;" class=" action-change-pass m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill inverse" title="Đổi mật khẩu">\
+                                            <i class="fa fa-key" style="color: #ffb822 "></i>\
+                                         </a>\
                                         <a href="javascript:;" class=" action-user-edit m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill inverse" title="Chỉnh sửa">\
-                                            <i class="fas fa-edit"></i>\
+                                            <i class="fa fa-edit" style="color: #00c5dc"></i>\
                                         </a>\
                                         <a href="javascript:;" class=" action-user-delete m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill inverse" title="Xóa">\
-                                            <i class="fas fa-trash-alt"></i>\
+                                            <i class="fas fa-trash-alt" style="color: #dc3545"></i>\
                                         </a>\
                                    '
                         }
@@ -111,6 +114,12 @@
                     var tr = $(this).closest('tr');
                     var data = $($this.$el).DataTable().row(tr).data();
                     $this.deleteUser(data);
+                })
+                
+                $(document).on('click','action-change-pass',function () {
+                    // var tr = $(this).closest('tr');
+                    // var data = $(this.$el).DataTable().row(tr).data('password');
+                    alert('chỉnh sửa mật khẩu')
                 })
             },
 

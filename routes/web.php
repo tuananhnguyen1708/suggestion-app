@@ -1,12 +1,13 @@
 <?php
 
 //
-Route::get('/', 'HomeController@index')->name('index');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'UserController@dashboard')->name('index');
+Route::get('/home', 'UserController@index')->name('home');
+Route::get('/dashboard', 'UserController@dashboard')->name('dashboard');
 Auth::routes();
 $this->get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::post('/listing','HomeController@listing')->name('listing');
-Route::post('/delete','HomeController@delete')->name('delete');
-Route::post('/store','HomeController@store')->name('store');
-Route::post('/update','HomeController@update')->name('update');
+Route::post('/listing','UserController@listing')->name('listing');
+Route::post('/delete','UserController@delete')->name('delete');
+Route::post('/store','UserController@store')->name('store');
+Route::post('/update','UserController@update')->name('update');
